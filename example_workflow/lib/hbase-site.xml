@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!--
+This file can be hand edited or generated automatically with
+============================================================
+export hbase_master=<hbase_master_host>
+export hbase_master_web_ui_port=16010
+wget ${hbase_master}:${hbase_master_web_ui_port}/conf -O - | \
+egrep 'hbase.zookeeper.property.clientPort|hbase.zookeeper.quorum|'\
+'hbase.security.authorization|hbase.security.authentication|'\
+'hbase.master.kerberos.principal|hbase.rpc.engine|'\
+'hbase.cluster.distributed|configuration>' | \
+sed 's#<source>.*</source>##' >> hbase-site.xml
+-->
+
+<configuration>
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value></value>
+  </property>
+  <property>
+    <name>hbase.master.kerberos.principal</name>
+    <value></value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.property.clientPort</name>
+    <value>2181</value>
+  </property>
+  <property>
+    <name>hbase.security.authorization</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hbase.security.authentication</name>
+    <value>kerberos</value>
+  </property>
+  <property>
+    <name>hbase.rpc.engine</name>
+    <value>org.apache.hadoop.hbase.ipc.SecureRpcEngine</value>
+  </property>
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+  </property>
+</configuration>
