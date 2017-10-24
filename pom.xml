@@ -32,7 +32,7 @@
             <version>1.1.2.2.3.6.0-3796</version>
         </dependency>
 
-     <!-- work-around for jetty error 6.1.26.hwx -->
+     <!-- work-around for missing jetty error 6.1.26.hwx -->
         <dependency>
             <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty</artifactId>
@@ -41,7 +41,7 @@
 
     </dependencies>
 
-<!--    <repositories>
+    <repositories>
       <repository>
         <releases>
           <enabled>true</enabled>
@@ -53,7 +53,7 @@
         <name>Hortonworks HDP</name>
         <url>http://repo.hortonworks.com/content/repositories/releases</url>
       </repository>
-    </repositories> -->
+    </repositories>
 
     <build>
         <plugins>
@@ -90,6 +90,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
                 <configuration>
             	<archive>
             	    <manifest>
