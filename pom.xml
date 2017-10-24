@@ -41,7 +41,7 @@
 
     </dependencies>
 
-    <repositories>
+<!--    <repositories>
       <repository>
         <releases>
           <enabled>true</enabled>
@@ -53,7 +53,7 @@
         <name>Hortonworks HDP</name>
         <url>http://repo.hortonworks.com/content/repositories/releases</url>
       </repository>
-    </repositories>
+    </repositories> -->
 
     <build>
         <plugins>
