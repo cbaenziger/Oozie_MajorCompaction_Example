@@ -6,7 +6,7 @@ Simply run the following to build:
 `mvn assembly:assembly -DdescriptorId=jar-with-dependencies`
 
 # To deploy workflow:
-One will deploy the workflow and files to their HDFS. Then, one will submit the `job.properties` to to Oozie kicking off compactions.
+One will deploy the workflow and files to their HDFS. Then, one will submit the `job.properties` to Oozie kicking off compactions.
 
 ## To stage files on local machine:
 1. Put a client `hbase-site.xml` in example_`workflow/lib` directory (or run the shell script in the included `hbase-site.xml` to generate the file.)

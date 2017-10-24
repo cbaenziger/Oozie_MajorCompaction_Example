@@ -31,6 +31,14 @@
             <artifactId>hbase-client</artifactId>
             <version>1.1.2.2.3.6.0-3796</version>
         </dependency>
+
+     <!-- work-around for jetty error 6.1.26.hwx -->
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.1.26</version>
+        </dependency>
+
     </dependencies>
 
 <!--    <repositories>
