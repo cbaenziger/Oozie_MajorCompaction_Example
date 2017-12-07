@@ -17,14 +17,21 @@
 
 package com.bloomberg;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.HRegionInfo;
+import org.apache.hadoop.hbase.ServerName;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.MetaTableAccessor;
 import org.apache.hadoop.hbase.client.Admin;
+import org.apache.hadoop.hbase.ClusterStatus;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.fs.Path;
-import java.util.concurrent.TimeUnit;
+import org.apache.hadoop.hbase.client.RegionInfo;
+import org.apache.hadoop.hbase.util.Pair;
 
 public class MajorCompaction {
 
@@ -42,6 +49,11 @@ public class MajorCompaction {
 
     System.out.println("Compacting table " + argc[0]);
     TableName tableName = TableName.valueOf(argc[0]);
+    MetaTableAccessor mta = new MetaTableAccessor();
+
+    List<Pair<RegionInfo,ServerName>> regionLocations = mta.getTableRegionsAndLocations(tableName);
+    for 
+
     admin.majorCompact(tableName);
     while (admin.getCompactionState(tableName).toString() == "MAJOR") {
       TimeUnit.SECONDS.sleep(10);

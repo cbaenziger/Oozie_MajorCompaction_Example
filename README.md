@@ -11,7 +11,7 @@ One will deploy the workflow and files to their HDFS. Then, one will submit the 
 ## To stage files on local machine:
 1. Put a client `hbase-site.xml` in example_`workflow/lib` directory (or run the shell script in the included `hbase-site.xml` to generate the file.)
 2. Copy `target/MajorCompaction-0.0.1-SNAPSHOT-jar-with-dependencies.jar` into `workflow/lib` directory.
-3. Modify `example_workflow/job.properties` to match your cluster configuration (look for the items in angle brackets); the values can largely come from your `hbase-site.xml` downloaded in step 2.
+3. Modify `example_workflow/job.properties` to match your cluster configuration (look for the items in angle brackets); the values can largely come from your `hbase-site.xml` downloaded in step 1.
 5. Upload `example_workflow` to HDFS (E.g. `hdfs dfs -copyFromLocal `example_workflow` `oozie_compaction`.)
 
 ## To submit and run the job:
