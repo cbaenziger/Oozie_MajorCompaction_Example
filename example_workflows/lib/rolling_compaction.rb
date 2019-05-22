@@ -60,7 +60,11 @@ end
 # Arguments: table - string name of the table to compact
 #            force_compaction - to force compaction of all regions - e.g. for data locality
 #                               (otherwise those with weight 0 are skipped)
-def rolling_compaction(table, force_compaction)
+#            compaction_timeout - how many minutes to run compaction before declaring done
+#                                 to ensure only the highest priority regions get compacted
+#                                 (set to 0 to run until all regions are compacted from the
+#                                 initial compaction plan)
+def rolling_compaction(table, force_compaction, compaction_timeout)
   cp = generate_compaction_plan(table, force_compaction)
 
   puts "Regions to compact for table %s:" % table
@@ -68,12 +72,14 @@ def rolling_compaction(table, force_compaction)
     puts "%s has %s region(s) to compact" % [server, [0, reg_hash.map {|weight, vals| vals.length}.inject(:+)].compact.max]
   end
 
+  # ruby's epoch time as a float is fractional; need to multiply by 1000 to get HBase timestamps
   start_time = Time.now.to_f * 1000
 
   # loop over regions until we have worked through entire compaction plan
   until cp.empty?
     # strip servers as we remove all regions
     cp.reject! {|server, reg_hash| reg_hash.empty?}
+
     # compact a new region
     cp.each do |server, reg_hash|
       highest_weight = reg_hash.keys.sort.reverse.last
@@ -89,6 +95,11 @@ def rolling_compaction(table, force_compaction)
         @ADMIN.majorCompactRegion(region)
       end
     end
+
+    if (compaction_timeout > 0 && ((Time.now.to_f - start_time/1000)/60) > compaction_timeout)
+      STDERR.puts "Ran out of time! Compaction timeout hit: %s minutes" % compaction_timeout
+      break
+    end
     sleep(0.25)
   end
   puts "Done compacting in %s seconds" % (Time.now.to_f - start_time/1000)
@@ -97,6 +108,6 @@ end
 # Equivalent of
 # if __FILE__ == $0
 if ENV.fetch('table_name', false)
-  rolling_compaction(ENV.fetch('table_name'), ENV.fetch('force_compaction', false))
+  rolling_compaction(ENV.fetch('table_name'), ENV.fetch('force_compaction', false), ENV.fetch('compaction_timeout', 0).to_i)
   exit
 end

@@ -63,7 +63,8 @@
           <argument>shell</argument>
           <argument>rolling_compaction.rb</argument>
           <env-var>table_name=${tableName}</env-var>
-          <env-var>force_compaction=false</env-var>
+          <env-var>force_compaction=${forceCompaction}</env-var>
+          <env-var>compaction_timeout=${compactionTimeout}</env-var>
         </shell>
         <ok to="end"/>
         <error to="fail"/>
