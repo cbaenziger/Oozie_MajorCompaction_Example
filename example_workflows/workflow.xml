@@ -2,7 +2,6 @@
   <global>
    <job-tracker>${jobTracker}</job-tracker>
    <name-node>${nameNode}</name-node>
-   <job-xml>lib/hbase-site.xml</job-xml>
    <configuration>
         <property>
             <name>mapred.job.queue.name</name>
@@ -59,11 +58,13 @@
   </credentials>
   <start to="CompactTable"/>
   <action name="CompactTable" cred="hbase_creds">
-        <java>
-            <main-class>com.bloomberg.MajorCompaction</main-class>
-            <arg>${tableName}</arg>
-            <capture-output />
-        </java>
+        <shell xmlns="uri:oozie:shell-action:0.3">
+          <exec>/usr/bin/hbase</exec>
+          <argument>shell</argument>
+          <argument>rolling_compaction.rb</argument>
+          <env-var>table_name=${tableName}</env-var>
+          <env-var>force_compaction=false</env-var>
+        </shell>
         <ok to="end"/>
         <error to="fail"/>
     </action>
