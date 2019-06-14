@@ -9,12 +9,14 @@ One will deploy the workflow, coordinator and files to HDFS. Then, one will subm
 2. Modify `example_workflows/coordinator.xml` to match your desired frequency of compaction.
 3. Upload `example_workflows` to HDFS (E.g. `hdfs dfs -copyFromLocal `example_workflows` `oozie_compaction`.)
 
+NOTE: `workflow.xml` has a hardcoded `hbase` path of `/usr/bin/hbase` 
+
 ## Submit the one-time workflow and run the job:
 One can follow the below steps to deploy the workflow:
 1. Submit the job via `oozie job -config example_workflows/workflow.properties -run`.
 2. One can see that their table was compacted by looking in the action's YARN logs for the string "Done Compacting".
 
-Example output from yarn log -applicationID application_######:
+Example output from `yarn logs -applicationId application_######`:
 ```
 Stdoutput Regions to compact for table clay_test:
 Stdoutput myhost1.example.com,60200,1556069347115 has 1 region(s) to compact
@@ -25,7 +27,7 @@ Stdoutput myhost1.example.com,60200,1556069347115 region 1d8d46167cdd550b4ac1036
 Stdoutput Done compacting in 68.4029998779297 seconds
 ```
 
-## Submit the scheduled coordinator and regularly run the job:
+## Submit the scheduled coordinator to regularly run the job:
 One can follow the below steps to deploy the coordinator:
 1. Submit the job via `oozie job -config example_workflows/coordinators.properties -run` recording the coordinator ID returned.
 2. Verify that only one workflow job is running via `oozie job -info <coordinator ID>`
@@ -44,5 +46,3 @@ If one has an `hbase` binary not at `/usr/bin/hbase`, one can run:
 $ export table_name="<your table>"
 $ export force_compaction="true|false"
 $ <path to your hbase binary> shell ./rolling_compaction.rb
-```
-NOTE: `workflow.xml` has a hardcoded `hbase` path of `/usr/bin/hbase` 
